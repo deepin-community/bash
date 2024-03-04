@@ -1,11 +1,3 @@
-bash51-001.diff
-bash51-002.diff
-bash51-003.diff
-bash51-004.diff
-bash51-005.diff
-bash51-006.diff
-bash51-007.diff
-bash51-008.diff
 bashbug-editor.diff
 deb-bash-config.diff
 deb-examples.diff
@@ -23,6 +15,7 @@ exec-redirections-doc.diff
 bash-aliases-repeat.diff
 # no-brk-caching.diff
 use-system-texi2html.diff
-bzero.diff
 man-macro-warnings.diff
 man-vx-opts.diff
+bash-musl.diff
+fix-rl_do_undo-crash.diff
