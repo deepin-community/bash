@@ -1,6 +1,6 @@
 /* sig.c - interface for shell signal handlers and signal initialization. */
 
-/* Copyright (C) 1994-2020 Free Software Foundation, Inc.
+/* Copyright (C) 1994-2021 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -55,7 +55,8 @@
 #  include "bashhist.h"
 #endif
 
-extern void initialize_siglist ();
+extern void initialize_siglist PARAMS((void));
+extern void set_original_signal PARAMS((int, SigHandler *));
 
 #if !defined (JOB_CONTROL)
 extern void initialize_job_signals PARAMS((void));
@@ -93,6 +94,7 @@ static SigHandler *old_winch = (SigHandler *)SIG_DFL;
 #endif
 
 static void initialize_shell_signals PARAMS((void));
+static void kill_shell PARAMS((int));
 
 void
 initialize_signals (reinit)
@@ -255,6 +257,13 @@ initialize_terminating_signals ()
       sigaction (XSIG (i), &act, &oact);
       XHANDLER(i) = oact.sa_handler;
       XSAFLAGS(i) = oact.sa_flags;
+
+#if 0
+      set_original_signal (XSIG(i), XHANDLER(i));	/* optimization */
+#else
+      set_original_signal (XSIG(i), act.sa_handler);	/* optimization */
+#endif
+
       /* Don't do anything with signals that are ignored at shell entry
 	 if the shell is not interactive. */
       /* XXX - should we do this for interactive shells, too? */
@@ -478,6 +487,8 @@ restore_sigmask ()
 #endif
 }
 
+static int handling_termsig = 0;
+
 sighandler
 termsig_sighandler (sig)
      int sig;
@@ -524,6 +535,14 @@ termsig_sighandler (sig)
    sig == terminating_signal)
     terminate_immediately = 1;
 
+  /* If we are currently handling a terminating signal, we have a couple of
+     choices here. We can ignore this second terminating signal and let the
+     shell exit from the first one, or we can exit immediately by killing
+     the shell with this signal. This code implements the latter; to implement
+     the former, replace the kill_shell(sig) with return. */
+  if (handling_termsig)
+    kill_shell (sig);		/* just short-circuit now */
+
   terminating_signal = sig;
 
   if (terminate_immediately)
@@ -556,16 +575,13 @@ void
 termsig_handler (sig)
      int sig;
 {
-  static int handling_termsig = 0;
-  int i, core;
-  sigset_t mask;
-
   /* Simple semaphore to keep this function from being executed multiple
      times.  Since we no longer are running as a signal handler, we don't
      block multiple occurrences of the terminating signals while running. */
   if (handling_termsig)
     return;
-  handling_termsig = 1;
+
+  handling_termsig = terminating_signal;	/* for termsig_sighandler */
   terminating_signal = 0;	/* keep macro from re-testing true. */
 
   /* I don't believe this condition ever tests true. */
@@ -604,6 +620,16 @@ termsig_handler (sig)
   executing_list = comsub_ignore_return = return_catch_flag = wait_intr_flag = 0;
 
   run_exit_trap ();	/* XXX - run exit trap possibly in signal context? */
+
+  kill_shell (sig);
+}
+
+static void
+kill_shell (sig)
+     int sig;
+{
+  int i, core;
+  sigset_t mask;
 
   /* We don't change the set of blocked signals. If a user starts the shell
      with a terminating signal blocked, we won't get here (and if by some
