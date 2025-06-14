@@ -165,19 +165,18 @@ int is_pseudo_tty(int fd)
   return 0;
 }
 
-int clear_console()
+int clear_console(int fd)
 {
+  int num, tmp_num;
+#if defined(__linux__)
+  struct vt_stat vtstat;
+#endif
+
   /* Linux console secure erase (since 2.6.39), this is sufficient there;
      other terminals silently ignore this code.  If they don't and write junk
      instead, well, we're clearing the screen anyway.
    */ 
   write(1, "\e[3J", 4);
-
-  if (is_pseudo_tty(STDIN_FILENO))
-    return 0;
-
-  if (!strcmp(getenv("TERM"), "screen"))
-      return 0;
 
   /* clear screen */
   setupterm((char *) 0, 1, (int *) 0);
@@ -185,11 +184,64 @@ int clear_console()
     {
       exit(1);
     }
+
+  if (is_pseudo_tty(STDIN_FILENO))
+    return 0;
+
+  if (!strcmp(getenv("TERM"), "screen"))
+      return 0;
+
+  /* get current vt */
+#if defined(__linux__)
+  if (ioctl(fd, VT_GETSTATE, &vtstat) < 0)
+#elif defined(__FreeBSD_kernel__)
+  if (ioctl(fd, VT_ACTIVATE, &num) < 0)
+#endif
+    {
+      if (!quiet)
+	fprintf(stderr, "%s: cannot get VTstate\n", progname);
+      exit(1);
+    }
+#if defined(__linux__)
+  num = vtstat.v_active;
+#endif
+  tmp_num = (num == 6 ? 5 : 6);
+
+  /* switch vt to clear the scrollback buffer */
+  if (ioctl(fd, VT_ACTIVATE, tmp_num))
+    {
+      if (!quiet)
+	perror("chvt: VT_ACTIVATE");
+      exit(1);
+    }
+
+  if (ioctl(fd, VT_WAITACTIVE, tmp_num))
+    {
+      if (!quiet)
+	perror("VT_WAITACTIVE");
+      exit(1);
+    }
+
+  /* switch back */
+  if (ioctl(fd, VT_ACTIVATE, num))
+    {
+      if (!quiet)
+	perror("chvt: VT_ACTIVATE");
+      exit(1);
+    }
+
+  if (ioctl(fd, VT_WAITACTIVE, num))
+    {
+      if (!quiet)
+	perror("VT_WAITACTIVE");
+      exit(1);
+    }
   return 0;
 }
 
 int main (int argc, char* argv[])
 {
+  int fd;
   int result;                          /* option handling */
   int an_option;
 
@@ -226,14 +278,14 @@ int main (int argc, char* argv[])
       exit(1);
     }
 
-  if ((get_console_fd(NULL)) == -1)
+  if ((fd = get_console_fd(NULL)) == -1)
     {
       if (!quiet)
 	fprintf(stderr, "%s: terminal is not a console\n", progname);
       exit(1);
     }
 
-  clear_console();
+  clear_console(fd);
 
   return 0;
 }
