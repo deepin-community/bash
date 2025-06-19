@@ -1,8 +1,58 @@
-bash (5.2.21-2.1deepin1) unstable; urgency=medium
+bash (5.2.37-2deepin1) unstable; urgency=medium
 
   * modify method of clearing terminal scroll buffer
 
  -- luojiahao <luojiahao@uniontech.com>  Thu, 19 Jun 2025 15:19:12 +0800
+
+bash (5.2.37-2) unstable; urgency=medium
+
+  * Remove VCS attributes. Closes: #747400, #859264, #1099719.
+  * Bump standards version.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 09 Apr 2025 10:34:37 +0200
+
+bash (5.2.37-1.1) unstable; urgency=medium
+
+  * NMU
+  * Fix FTBFS (Closes: #1092374)
+    - d/rules: Remove pre-built docs to ensure they are regenerated.
+      Without this, the `-b` build would fail but `-B` / `-A` would
+      somehow succed.
+    - Import packaging changes from 5.3~beta1-1 to make the build
+      more robust. This also includes a `Rules-Requires-Root`,
+      which is part of fixing this FTBFS.
+
+ -- Niels Thykier <niels@thykier.net>  Sun, 16 Feb 2025 09:57:09 +0000
+
+bash (5.2.37-1) unstable; urgency=medium
+
+  * New patch release.
+    - A typo in the autoconf test for strtold causes false negatives for
+      strtold being available and working when compiled with gcc-14.
+    - If we parse a compound assignment during an alias expansion, it's
+      possible to have the current input string popped out from underneath
+      the parse. In this case, we should not restore the input we were using
+      when we began to parse the compound assignment.
+    - Handle systems that supply one of select or pselect, but not both.
+    - When readline is accumulating bytes until it reads a complete multibyte
+      character, reading a byte that makes the multibyte character invalid can
+      result in discarding the bytes in the partial character.
+    - Fix the case where text to be completed from the line buffer (quoted) is
+      compared to the common prefix of the possible matches (unquoted) and the
+      quoting makes the former appear to be longer than the latter. Readline
+      assumes the match doesn't add any characters to the word and doesn't
+      display multiple matches.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 05 Oct 2024 08:23:04 +0200
+
+bash (5.2.32-1) unstable; urgency=medium
+
+  * New patch release.
+    - Remove duplicate definition of strtoimax. Closes: #1023053.
+  * /etc/bash.bashrc Don't dereference undefined variables, breaking
+    when run with -u. Closes: #941248, #1034658, #1064645.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 20 Aug 2024 09:47:46 +0200
 
 bash (5.2.21-2.1) unstable; urgency=medium
 
