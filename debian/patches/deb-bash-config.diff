@@ -17,7 +17,7 @@
 
 --- a/config-bot.h
 +++ b/config-bot.h
-@@ -204,4 +204,4 @@
+@@ -193,4 +193,4 @@
  /******************************************************************/
  
  /* If you don't want bash to provide a default mail file to check. */
@@ -25,7 +25,7 @@
 +#undef DEFAULT_MAIL_DIRECTORY
 --- a/config-top.h
 +++ b/config-top.h
-@@ -97,20 +97,20 @@
+@@ -92,20 +92,20 @@
  #define DEFAULT_BASHRC "~/.bashrc"
  
  /* System-wide .bashrc file for interactive shells. */
