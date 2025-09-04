@@ -1,3 +1,11 @@
+bash (5.3-1deepin1) unstable; urgency=medium
+
+  * Refresh patch from luojiahao:
+    + modify method of clearing terminal scroll buffer
+      https://github.com/deepin-community/bash/pull/4
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Thu, 04 Sep 2025 10:47:53 +0800
+
 bash (5.3-1) unstable; urgency=medium
 
   * New upstream release 5.3.
