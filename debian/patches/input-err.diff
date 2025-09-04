@@ -1,10 +1,8 @@
 # DP: Define PGRP_PIPE to avoid race condition.
 
-Index: b/input.c
-===================================================================
 --- a/input.c
 +++ b/input.c
-@@ -517,7 +517,7 @@ b_fill_buffer (bp)
+@@ -520,7 +520,7 @@ b_fill_buffer (BUFFERED_STREAM *bp)
        if (nr == 0)
  	bp->b_flag |= B_EOF;
        else

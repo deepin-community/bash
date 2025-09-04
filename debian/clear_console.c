@@ -167,6 +167,8 @@ int is_pseudo_tty(int fd)
 
 int clear_console()
 {
+  char *term;
+
   /* Linux console secure erase (since 2.6.39), this is sufficient there;
      other terminals silently ignore this code.  If they don't and write junk
      instead, well, we're clearing the screen anyway.
@@ -176,7 +178,10 @@ int clear_console()
   if (is_pseudo_tty(STDIN_FILENO))
     return 0;
 
-  if (!strcmp(getenv("TERM"), "screen"))
+  term = getenv("TERM");
+  if (!strcmp(term, "screen"))
+      return 0;
+  if (strlen(term) >= strlen("screen.") && !strncmp(term, "screen.", strlen("screen.")))
       return 0;
 
   /* clear screen */

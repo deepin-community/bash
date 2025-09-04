@@ -14,20 +14,20 @@
  false or an invalid argument is given.
 --- a/doc/bash.1
 +++ b/doc/bash.1
-@@ -732,6 +732,10 @@ as primaries.
- .if n .sp 1
+@@ -804,6 +804,10 @@ as primaries.
+ .IP
  When used with \fB[[\fP, the \fB<\fP and \fB>\fP operators sort
  lexicographically using the current locale.
 +.PP
 +See the description of the \fItest\fP builtin command (section SHELL
 +BUILTIN COMMANDS below) for the handling of parameters (i.e.
 +missing parameters).
- .if t .sp 0.5
- .if n .sp 1
+ .IP
  When the \fB==\fP and \fB!=\fP operators are used, the string to the
+ right of the operator is considered a pattern and matched according
 --- a/doc/bashref.texi
 +++ b/doc/bashref.texi
-@@ -7322,6 +7322,10 @@ The @code{test} command uses ASCII order
+@@ -8267,6 +8267,10 @@ The @code{test} command uses ASCII order
  Unless otherwise specified, primaries that operate on files follow symbolic
  links and operate on the target of the link, rather than the link itself.
  

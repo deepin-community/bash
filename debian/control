@@ -2,7 +2,7 @@ Source: bash
 Section: base
 Priority: required
 Maintainer: Matthias Klose <doko@debian.org>
-Standards-Version: 4.6.2
+Standards-Version: 4.7.2
 Build-Depends: autoconf, autotools-dev, bison, libncurses5-dev,
  texinfo, texi2html, debhelper (>= 11), gettext, sharutils,
  locales <!nocheck>, time <!nocheck>,
@@ -10,8 +10,9 @@ Build-Depends: autoconf, autotools-dev, bison, libncurses5-dev,
 Build-Depends-Indep: texlive-latex-base, ghostscript, texlive-fonts-recommended, man2html-base
 Build-Conflicts: r-base-core
 Homepage: http://tiswww.case.edu/php/chet/bash/bashtop.html
-Vcs-Browser: https://code.launchpad.net/~doko/+junk/pkg-bash-debian
-Vcs-Bzr: http://bazaar.launchpad.net/~doko/+junk/pkg-bash-debian
+#Vcs-Browser: https://code.launchpad.net/~doko/+junk/pkg-bash-debian
+#Vcs-Bzr: http://bazaar.launchpad.net/~doko/+junk/pkg-bash-debian
+Rules-Requires-Root: binary-targets
 
 Package: bash
 Architecture: any

@@ -1,8 +1,58 @@
-bash (5.2.21-2.1deepin1) unstable; urgency=medium
+bash (5.3-1deepin1) unstable; urgency=medium
 
-  * modify method of clearing terminal scroll buffer
+  * Refresh patch from luojiahao:
+    + modify method of clearing terminal scroll buffer
+      https://github.com/deepin-community/bash/pull/4
 
- -- luojiahao <luojiahao@uniontech.com>  Thu, 19 Jun 2025 15:19:12 +0800
+ -- Tianyu Chen <sweetyfish@deepin.org>  Thu, 04 Sep 2025 10:47:53 +0800
+
+bash (5.3-1) unstable; urgency=medium
+
+  * New upstream release 5.3.
+  * Apply upstream patches 001 - 003.
+  * clear_console: Handle screen and screen.* TERM envvar.
+  * bashrc: Avoid a command-not-found lookup stat (Ville Skyttä).
+    Closes: #1015216.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 03 Sep 2025 10:39:11 +0200
+
+bash (5.3~rc2-1) experimental; urgency=medium
+
+  * New upstream release candidate 5.3 rc2.
+  * /etc/bashrc: Add support to source /etc/profile.d. This is
+    commented out by default.  Users should explicity enable that if
+    wanted.  Addresses: #675008.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 11 Jun 2025 18:29:42 +0200
+
+bash (5.3~rc1-1) experimental; urgency=medium
+
+  * New upstream release candidate 5.3 rc1.
+  * Remove VCS attributes.
+  * Bump standards version.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 09 Apr 2025 10:39:39 +0200
+
+bash (5.3~beta1-1) experimental; urgency=medium
+
+  * New upstream snapshot 5.3 beta.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 21 Jan 2025 14:00:26 +0100
+
+bash (5.3~alpha1-1) experimental; urgency=medium
+
+  * New upstream snapshot 5.3 alpha.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 20 Aug 2024 11:58:50 +0200
+
+bash (5.2.32-1) unstable; urgency=medium
+
+  * New patch release.
+    - Remove duplicate definition of strtoimax. Closes: #1023053.
+  * /etc/bash.bashrc Don't dereference undefined variables, breaking
+    when run with -u. Closes: #941248, #1034658, #1064645.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 20 Aug 2024 09:47:46 +0200
 
 bash (5.2.21-2.1) unstable; urgency=medium
 

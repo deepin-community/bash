@@ -1,10 +1,8 @@
 # DP: document -v / -x options
 
-Index: b/doc/bash.1
-===================================================================
 --- a/doc/bash.1
 +++ b/doc/bash.1
-@@ -131,6 +131,12 @@ This option allows the positional parame
+@@ -159,6 +159,12 @@ This option allows the positional parame
  when invoking an interactive shell or when reading input
  through a pipe.
  .TP
@@ -15,5 +13,5 @@ Index: b/doc/bash.1
 +Print commands and their arguments as they are executed.
 +.TP
  .B \-D
- A list of all double-quoted strings preceded by \fB$\fP
- is printed on the standard output.
+ Print a list of all double-quoted strings preceded by \fB$\fP
+ on the standard output.

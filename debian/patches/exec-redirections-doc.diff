@@ -1,6 +1,6 @@
 --- a/doc/bash.1
 +++ b/doc/bash.1
-@@ -4121,6 +4121,10 @@ A failure to open or create a file cause
+@@ -4786,6 +4786,10 @@ A failure to open or create a file cause
  Redirections using file descriptors greater than 9 should be used with
  care, as they may conflict with file descriptors the shell uses
  internally.
@@ -9,11 +9,11 @@
 +.B exec
 +builtin command can make redirections take effect in the current shell.
  .SS Redirecting Input
- Redirection of input causes the file whose name results from
+ Redirecting input opens the file whose name results from
  the expansion of
 --- a/doc/bashref.texi
 +++ b/doc/bashref.texi
-@@ -3044,6 +3044,9 @@ Redirections using file descriptors grea
+@@ -3388,6 +3388,9 @@ Redirections using file descriptors grea
  care, as they may conflict with file descriptors the shell uses
  internally.
  
@@ -21,5 +21,5 @@
 +effect in the current shell.
 +
  @subsection Redirecting Input
- Redirection of input causes the file whose name results from
- the expansion of @var{word}
+ Redirecting input opens the file whose name results from
+ the expansion of @var{word} for reading on file descriptor @code{n},

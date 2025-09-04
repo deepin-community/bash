@@ -2,7 +2,7 @@
 
 --- a/doc/bash.1
 +++ b/doc/bash.1
-@@ -3580,6 +3580,9 @@ and the substitution of the result.  The
+@@ -4190,6 +4190,9 @@ The format for arithmetic expansion is:
  \fB$((\fP\fIexpression\fP\fB))\fP
  .RE
  .PP

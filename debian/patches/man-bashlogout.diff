@@ -2,13 +2,13 @@
 
 --- a/doc/bash.1
 +++ b/doc/bash.1
-@@ -11576,6 +11576,9 @@ The systemwide initialization file, exec
+@@ -13414,6 +13414,9 @@ The systemwide initialization file, exec
  .FN /etc/bash.bashrc
  The systemwide per-interactive-shell startup file
  .TP
 +.FN /etc/bash.bash.logout
 +The systemwide login shell cleanup file, executed when a login shell exits
 +.TP
- .FN ~/.bash_profile
+ .FN \*~/.bash_profile
  The personal initialization file, executed for login shells
  .TP

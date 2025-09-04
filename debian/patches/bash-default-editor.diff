@@ -2,7 +2,7 @@
 
 --- a/bashline.c
 +++ b/bashline.c
-@@ -936,8 +936,8 @@ hostnames_matching (text)
+@@ -934,8 +934,8 @@ hostnames_matching (const char *text)
     command being entered (if no explicit argument is given), otherwise on
     a command from the history file. */
  
@@ -15,7 +15,7 @@
  static int
 --- a/builtins/fc.def
 +++ b/builtins/fc.def
-@@ -171,11 +171,11 @@ set_verbose_flag ()
+@@ -181,11 +181,11 @@ uw_unlink (void *fn)
  }
  
  /* String to execute on a file that we want to edit. */
