@@ -8785,10 +8785,15 @@ parse_string_to_word_list (s, flags, whom)
   if (wl == &parse_string_error)
     {
       set_exit_status (EXECUTION_FAILURE);
+      current_token = '\n';	/* XXX */
       if (interactive_shell == 0 && posixly_correct)
 	jump_to_top_level (FORCE_EOF);
       else
-	jump_to_top_level (DISCARD);
+	{
+	  if (executing && parse_and_execute_level == 0)
+	    top_level_cleanup ();
+	  jump_to_top_level (DISCARD);
+	}
     }
 
   return (REVERSE_LIST (wl, WORD_LIST *));
@@ -8799,9 +8804,10 @@ parse_compound_assignment (retlenp)
      int *retlenp;
 {
   WORD_LIST *wl, *rl;
-  int tok, orig_line_number, assignok;
+  int tok, orig_line_number, assignok, ea, restore_pushed_strings;
   sh_parser_state_t ps;
   char *ret;
+  STRING_SAVER *ss;
 
   orig_line_number = line_number;
   save_parser_state (&ps);
@@ -8824,6 +8830,12 @@ parse_compound_assignment (retlenp)
 
   esacs_needed_count = expecting_in_token = 0;
 
+  /* We're not pushing any new input here, we're reading from the current input
+     source. If that's an alias, we have to be prepared for the alias to get
+     popped out from underneath us. */
+  ss = (ea = expanding_alias ()) ? pushed_string_list : (STRING_SAVER *)NULL;
+  restore_pushed_strings = 0;
+    
   while ((tok = read_token (READ)) != ')')
     {
       if (tok == '\n')			/* Allow newlines in compound assignments */
@@ -8847,16 +8859,29 @@ parse_compound_assignment (retlenp)
       wl = make_word_list (yylval.word, wl);
     }
 
+  /* Check whether or not an alias got popped out from underneath us and
+     fix up after restore_parser_state. */
+  if (ea && ss && ss != pushed_string_list)
+    {
+      restore_pushed_strings = 1;
+      ss = pushed_string_list;
+    }
   restore_parser_state (&ps);
+  if (restore_pushed_strings)
+    pushed_string_list = ss;
 
   if (wl == &parse_string_error)
     {
       set_exit_status (EXECUTION_FAILURE);
-      last_read_token = '\n';	/* XXX */
+      last_read_token = current_token = '\n';	/* XXX */
       if (interactive_shell == 0 && posixly_correct)
 	jump_to_top_level (FORCE_EOF);
       else
-	jump_to_top_level (DISCARD);
+	{
+	  if (executing && parse_and_execute_level == 0)
+	    top_level_cleanup ();
+	  jump_to_top_level (DISCARD);
+	}
     }
 
   if (wl)
