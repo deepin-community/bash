@@ -1,3 +1,9 @@
+bash (5.2.37-2deepin1) unstable; urgency=medium
+
+  * backport: modify method of clearing terminal scroll buffer
+
+ -- lichenggang <lichenggang@deepin.org>  Wed, 15 Jul 2026 13:05:17 +0800
+
 bash (5.2.37-2) unstable; urgency=medium
 
   * Remove VCS attributes. Closes: #747400, #859264, #1099719.
